@@ -1,8 +1,19 @@
+
+
 import pandas as pd
 import streamlit as st
 import pickle
+import numpy as np
+
+import os
+movies_dict = pickle.load(open('C:\\Users\\garvi\\1_MachineLearning\\MovieRecommender\\movie_dict.pkl', 'rb'))
+movies = pd.DataFrame(movies_dict)
 
 
+model_path = 'C:\\Users\\garvi\\1_MachineLearning\\MovieRecommender\\similarity.pkl'
+
+with (open(model_path, "rb") as pickle_in):
+    similarity = pickle.load(pickle_in)
 def recommend(movie):
     movie_index = movies[movies['title'] == movie].index[0]
     distances = similarity[movie_index]
@@ -14,11 +25,6 @@ def recommend(movie):
         recommended_movies.append(movies.iloc[i[0]].title)
     return recommended_movies
 
-
-movies_dict = pickle.load(open('movie_dict.pkl', 'rb'))
-movies = pd.DataFrame(movies_dict)
-
-similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 st.title('Movie Recommender System')
 
